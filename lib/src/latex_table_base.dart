@@ -1,0 +1,3 @@
+bool isAwesome() {
+  return true;
+}
