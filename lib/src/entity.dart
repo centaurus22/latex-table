@@ -1,10 +1,7 @@
 class Table {
-  final RowDefinition rowDefinition;
+  final List<FieldDefinition> fieldDefinitions;
   final List<Row> rows;
-}
-
-class RowDefinition{
-  final List<FieldDefinition> fields; 
+  Table({required this.fieldDefinitions, required this.rows});
 }
 
 class FieldDefinition{}
@@ -19,10 +16,14 @@ class BottomRule extends Row {}
 
 class DataRow extends Row {
   final List<Field> fields;
+  DataRow({required this.fields});
 }
 
 class Field {
   final String value;
+  Field ({required this.value});
 }
 
-class EuroField extends Field {}
+class EuroField extends Field {
+  EuroField({required super.value});
+}
