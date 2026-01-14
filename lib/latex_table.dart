@@ -4,5 +4,6 @@
 library;
 
 export 'src/latex_table_base.dart';
+export 'src/entity.dart';
 
 // TODO: Export any libraries intended for clients of this package.
