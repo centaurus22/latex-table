@@ -1,13 +1,13 @@
 class Table {
-  final List<FieldDefinition> fieldDefinitions;
+  final List<ColumnDefinition> columnDefinitions;
   final List<Row> rows;
-  Table({required this.fieldDefinitions, required this.rows});
+  Table({required this.columnDefinitions, required this.rows});
 }
 
-class FieldDefinition{}
-class LeftAlignedField extends FieldDefinition {}
-class CenteredField extends FieldDefinition {}
-class RightAlignedField extends FieldDefinition {}
+class ColumnDefinition{}
+class LeftAlignedColumn extends ColumnDefinition {}
+class CenteredColumn extends ColumnDefinition {}
+class RightAlignedColumn extends ColumnDefinition {}
 
 class Row {}
 class TopRule extends Row {}
