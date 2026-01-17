@@ -4,16 +4,15 @@ class Table {
   Table({required this.columnDefinitions, required this.rows});
 }
 
-class ColumnDefinition{}
+sealed class ColumnDefinition{}
 class LeftAlignedColumn extends ColumnDefinition {}
 class CenteredColumn extends ColumnDefinition {}
 class RightAlignedColumn extends ColumnDefinition {}
 
-class Row {}
+sealed class Row {}
 class TopRule extends Row {}
 class MidRule extends Row {}
 class BottomRule extends Row {}
-
 class DataRow extends Row {
   final List<Field> fields;
   DataRow({required this.fields});
