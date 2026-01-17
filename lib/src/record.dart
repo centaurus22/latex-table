@@ -27,3 +27,17 @@ class Field {
 class EuroField extends Field {
   EuroField({required super.value});
 }
+
+sealed class Result {
+  final List<String> warnings = [];
+}
+
+class Success extends Result {
+  final String value;
+  Success({required this.value});
+}
+
+class Error extends Result {
+  final String error;
+  Error({required this.error});
+}
