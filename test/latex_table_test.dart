@@ -10,7 +10,7 @@ void main() {
     });
     test('whether error is thrown when no field is defined', () {
       var table = Table(columnDefinitions: [], rows: []);
-      expect(()=> generateTable(table), throwsFormatException);
+      expect(() => generateTable(table), throwsFormatException);
     });
   });
 }

@@ -4,15 +4,22 @@ class Table {
   Table({required this.columnDefinitions, required this.rows});
 }
 
-sealed class ColumnDefinition{}
+sealed class ColumnDefinition {}
+
 class LeftAlignedColumn extends ColumnDefinition {}
+
 class CenteredColumn extends ColumnDefinition {}
+
 class RightAlignedColumn extends ColumnDefinition {}
 
 sealed class Row {}
+
 class TopRule extends Row {}
+
 class MidRule extends Row {}
+
 class BottomRule extends Row {}
+
 class DataRow extends Row {
   final List<Field> fields;
   DataRow({required this.fields});
@@ -20,7 +27,7 @@ class DataRow extends Row {
 
 class Field {
   final String value;
-  Field ({required this.value});
+  Field({required this.value});
 }
 
 class EuroField extends Field {
