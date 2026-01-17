@@ -44,6 +44,6 @@ class Success extends Result {
 }
 
 class Error extends Result {
-  final String error;
-  Error({required this.error});
+  final String message;
+  Error({required this.message});
 }
