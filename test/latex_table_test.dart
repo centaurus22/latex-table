@@ -20,5 +20,15 @@ void main() {
         expect(error.message.isNotEmpty, true);
       }
     });
+    test('generating base table with aligned column', () {
+      var result = generateTable(
+        Table(columnDefinitions: [LeftAlignedColumn()], rows: []),
+      );
+      var value = '\\begin{tabular}{l}\n\\end{tabular}';
+      expect(result.runtimeType, Success);
+      if (result is Success) {
+        expect(result.value, value);
+      }
+    });
   });
 }
