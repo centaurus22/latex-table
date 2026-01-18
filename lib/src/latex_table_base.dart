@@ -5,12 +5,18 @@ Result generateTable(Table table) {
     return Error(message: 'The table must have at least one column.');
   }
 
-  switch (table.columnDefinitions.first) {
-    case LeftAlignedColumn():
-      return Success(value: '\\begin{tabular}{l}\n\\end{tabular}');
-    case CenteredColumn():
-      return Success(value: '\\begin{tabular}{c}\n\\end{tabular}');
-    case RightAlignedColumn():
-      return Success(value: '\\begin{tabular}{r}\n\\end{tabular}');
+  return Success(
+    value: '\\begin{tabular}{${_alignmentCode(table.columnDefinitions.first)}}\n\\end{tabular}',
+  );
+}
+
+String _alignmentCode(ColumnDefinition columnDefinition) {
+  switch (columnDefinition) {
+    case LeftAlignedColumn _:
+      return 'l';
+    case CenteredColumn _:
+      return 'c';
+    case RightAlignedColumn _:
+      return 'r';
   }
 }
