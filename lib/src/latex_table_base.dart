@@ -1,8 +1,8 @@
 import 'package:latex_table/latex_table.dart';
 
-String generateTable(Table table) {
+Result generateTable(Table table) {
   if (table.columnDefinitions.isEmpty) {
     throw FormatException('The table must have at least one column.');
   }
-  return '\\begin{tabular}{c}\n\\end{tabular}';
+  return Success(value: '\\begin{tabular}{c}\n\\end{tabular}');
 }

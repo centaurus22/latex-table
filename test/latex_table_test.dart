@@ -4,9 +4,12 @@ import 'package:test/test.dart';
 void main() {
   group('latex generation tests', () {
     test('generating base table', () {
-      var table = Table(columnDefinitions: [CenteredColumn()], rows: []);
-      var result = '\\begin{tabular}{c}\n\\end{tabular}';
-      expect(generateTable(table), result);
+      var result = generateTable(Table(columnDefinitions: [CenteredColumn()], rows: []));
+      var value = '\\begin{tabular}{c}\n\\end{tabular}';
+      expect(result.runtimeType, Success);
+      if (result is Success) {
+        expect(result.value, value);
+      }
     });
     test('whether error is thrown when no field is defined', () {
       var table = Table(columnDefinitions: [], rows: []);
