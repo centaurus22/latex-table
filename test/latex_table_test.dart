@@ -4,7 +4,7 @@ import 'package:test/test.dart';
 void main() {
   group('latex generation tests', () {
     test('generating base table', () {
-      var result = generateTable(
+      var result = generateLatexTable(
         Table(columnDefinitions: [CenteredColumn()], rows: []),
       );
       var value = '\\begin{tabular}{c}\n\\end{tabular}';
@@ -14,14 +14,14 @@ void main() {
       }
     });
     test('whether error is returned when no column is defined', () {
-      var error = generateTable(Table(columnDefinitions: [], rows: []));
+      var error = generateLatexTable(Table(columnDefinitions: [], rows: []));
       expect(error.runtimeType, Error);
       if (error is Error) {
         expect(error.message.isNotEmpty, true);
       }
     });
     test('generating base table with aligned column', () {
-      var result = generateTable(
+      var result = generateLatexTable(
         Table(columnDefinitions: [LeftAlignedColumn()], rows: []),
       );
       var value = '\\begin{tabular}{l}\n\\end{tabular}';
