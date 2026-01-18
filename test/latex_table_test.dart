@@ -4,7 +4,9 @@ import 'package:test/test.dart';
 void main() {
   group('latex generation tests', () {
     test('generating base table', () {
-      var result = generateTable(Table(columnDefinitions: [CenteredColumn()], rows: []));
+      var result = generateTable(
+        Table(columnDefinitions: [CenteredColumn()], rows: []),
+      );
       var value = '\\begin{tabular}{c}\n\\end{tabular}';
       expect(result.runtimeType, Success);
       if (result is Success) {
@@ -17,6 +19,6 @@ void main() {
       if (error is Error) {
         expect(error.message.isNotEmpty, true);
       }
-});
+    });
   });
 }
