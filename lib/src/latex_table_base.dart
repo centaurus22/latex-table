@@ -12,7 +12,10 @@ Result generateLatexTable(Table table) {
 }
 
 String _alignmentCodes(List<ColumnDefinition> columnDefinitions) {
-  return columnDefinitions.fold('', (codes, columnDefinition) => codes + _alignmentCode(columnDefinition));
+  return columnDefinitions.fold(
+    '',
+    (codes, columnDefinition) => codes + _alignmentCode(columnDefinition),
+  );
 }
 
 String _alignmentCode(ColumnDefinition columnDefinition) {
