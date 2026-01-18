@@ -11,9 +11,12 @@ void main() {
         expect(result.value, value);
       }
     });
-    test('whether error is thrown when no field is defined', () {
-      var table = Table(columnDefinitions: [], rows: []);
-      expect(() => generateTable(table), throwsFormatException);
-    });
+    test('whether error is returned when no column is defined', () {
+      var error = generateTable(Table(columnDefinitions: [], rows: []));
+      expect(error.runtimeType, Error);
+      if (error is Error) {
+        expect(error.message.isNotEmpty, true);
+      }
+});
   });
 }
