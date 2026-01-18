@@ -20,11 +20,24 @@ void main() {
         expect(error.message.isNotEmpty, true);
       }
     });
-    test('generating base table with aligned column', () {
+    test('generating table with left aligned column', () {
       var result = generateLatexTable(
         Table(columnDefinitions: [LeftAlignedColumn()], rows: []),
       );
       var value = '\\begin{tabular}{l}\n\\end{tabular}';
+      expect(result.runtimeType, Success);
+      if (result is Success) {
+        expect(result.value, value);
+      }
+    });
+    test('generating table with two columns', () {
+      var result = generateLatexTable(
+        Table(
+          columnDefinitions: [LeftAlignedColumn(), RightAlignedColumn()],
+          rows: [],
+        ),
+      );
+      var value = '\\begin{tabular}{lr}\n\\end{tabular}';
       expect(result.runtimeType, Success);
       if (result is Success) {
         expect(result.value, value);

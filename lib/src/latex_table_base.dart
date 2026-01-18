@@ -6,8 +6,13 @@ Result generateLatexTable(Table table) {
   }
 
   return Success(
-    value: '\\begin{tabular}{${_alignmentCode(table.columnDefinitions.first)}}\n\\end{tabular}',
+    value:
+        '\\begin{tabular}{${_alignmentCodes(table.columnDefinitions)}}\n\\end{tabular}',
   );
+}
+
+String _alignmentCodes(List<ColumnDefinition> columnDefinitions) {
+  return columnDefinitions.fold('', (codes, columnDefinition) => codes + _alignmentCode(columnDefinition));
 }
 
 String _alignmentCode(ColumnDefinition columnDefinition) {
