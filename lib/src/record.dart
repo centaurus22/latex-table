@@ -116,7 +116,7 @@ sealed class Result {
 /// This is returned when functions are executed correctly.
 ///
 /// It can contain additional [warnings].
-/// The sealed base class is the [Result]. An [Error] can be returned too.
+/// The sealed base class is the [Result]. The other [Result] ist a [Error].
 class Success extends Result {
   /// The embedded value.
   final String value;
@@ -128,7 +128,7 @@ class Success extends Result {
 /// This is returned when a parameter is not valid.
 ///
 /// It can contain additional [warnings].
-/// The sealed base class ist the [Result]. A [Success]] can be returned too
+/// The sealed base class ist the [Result]. The other [Result] ist a [Success].
 /// when the function executed correctly.
 class Error extends Result {
   /// The error message.
