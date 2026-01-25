@@ -1,5 +1,12 @@
 import 'package:latex_table/latex_table.dart';
 
+/// API function to transfer a [Table] into the latex source code of a table.
+/// 
+/// Basically it returns an [Error] if the latex compiler would throw also
+/// an error. Otherwise a [Success] is returned. If the structure is
+/// malformed in other ways, it adds warnings to the [Result].
+/// 
+/// * It returns an [Error] if no column is defined.
 Result parse(Table table) {
   if (table.columnDefinitions.isEmpty) {
     return Error(message: 'The table must have at least one column.');
