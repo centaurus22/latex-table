@@ -57,5 +57,24 @@ void main() {
         expect(result.value, value);
       }
     });
+    test('generating table with two rows', () {
+      var result = parse(
+        Table(
+          columnDefinitions: [LeftAlignedColumn()],
+          rows: [
+            DataRow(fields: [Field(value: "Name")]),
+            DataRow(fields: [Field(value: "Klaus")])
+          ],
+        ),
+      );
+      var value = '\\begin{tabular}{l}\n'
+        '  Name$doubleBackSlash\n'
+        '  Klaus$doubleBackSlash\n'
+        '\\end{tabular}';
+      expect(result.runtimeType, Success);
+      if (result is Success) {
+        expect(result.value, value);
+      }
+    });
   });
 }

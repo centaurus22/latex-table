@@ -39,10 +39,18 @@ String _alignmentCode(ColumnDefinition columnDefinition) {
 }
 
 String _tableData(List<Row> rows) {
-  const doubleBackSlash = '\\';
+  return rows.fold(
+    '',
+    (rows, row) => rows + _row(row),
+  );
+}
 
-  if(rows.isNotEmpty) {
-    return '  Name$doubleBackSlash\n';
+String _row(Row row) {
+  switch(row) {
+    case DataRow _:
+      const doubleBackSlash = '\\';
+      return '  ${row.fields.first.value}$doubleBackSlash\n';
+    default:
+      return '';
   }
-  return '';
 }
