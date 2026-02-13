@@ -15,7 +15,7 @@ Result parse(Table table) {
   return Success(
     value:
         '\\begin{tabular}{${_alignmentCodes(table.columnDefinitions)}}\n'
-        '${_tableData(table.rows)}'
+        '${_data(table.rows)}'
         '\\end{tabular}',
   );
 }
@@ -38,7 +38,7 @@ String _alignmentCode(ColumnDefinition columnDefinition) {
   }
 }
 
-String _tableData(List<Row> rows) {
+String _data(List<Row> rows) {
   return rows.fold(
     '',
     (rows, row) => rows + _row(row),
