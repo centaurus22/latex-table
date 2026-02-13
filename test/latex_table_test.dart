@@ -152,5 +152,26 @@ void main() {
         expect(result.value, value);
       }
     });
+    test('generating midrule', () {
+      var result = parse(
+        Table(
+          columnDefinitions: [LeftAlignedColumn(), RightAlignedColumn()],
+          rows: [
+            DataRow(fields: [Field(value: "Name"), Field(value: "Value")]),
+            MidRule(),
+            DataRow(fields: [Field(value: "Version"), Field(value: "3.4.2")]),
+          ],
+        ),
+      );
+      var value = '\\begin{tabular}{lr}\n'
+        '  Name    & Value$doubleBackSlash\n'
+        '  \\midrule\n'
+        '  Version & 3.4.2$doubleBackSlash\n'
+        '\\end{tabular}';
+      expect(result.runtimeType, Success);
+      if (result is Success) {
+        expect(result.value, value);
+      }
+    });
   });
 }
