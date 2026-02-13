@@ -82,6 +82,8 @@ String _row(Row row, List<int> columnLengths) {
   switch(row) {
     case DataRow _:
       return '${_dataRow(row.fields, columnLengths)}\n';
+    case TopRule _:
+      return '  \\toprule\n';
     default:
       return '';
   }

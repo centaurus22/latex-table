@@ -114,5 +114,24 @@ void main() {
         expect(result.value, value);
       }
     });
+    test('generating toprule', () {
+      var result = parse(
+        Table(
+          columnDefinitions: [LeftAlignedColumn(), RightAlignedColumn()],
+          rows: [
+            TopRule(),
+            DataRow(fields: [Field(value: "Version"), Field(value: "3.4.2")])
+          ],
+        ),
+      );
+      var value = '\\begin{tabular}{lr}\n'
+        '  \\toprule\n'
+        '  Version & 3.4.2$doubleBackSlash\n'
+        '\\end{tabular}';
+      expect(result.runtimeType, Success);
+      if (result is Success) {
+        expect(result.value, value);
+      }
+    });
   });
 }
