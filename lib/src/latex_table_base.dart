@@ -14,7 +14,9 @@ Result parse(Table table) {
 
   return Success(
     value:
-        '\\begin{tabular}{${_alignmentCodes(table.columnDefinitions)}}\n\\end{tabular}',
+        '\\begin{tabular}{${_alignmentCodes(table.columnDefinitions)}}\n'
+        '${_tableData(table.rows)}'
+        '\\end{tabular}',
   );
 }
 
@@ -34,4 +36,13 @@ String _alignmentCode(ColumnDefinition columnDefinition) {
     case RightAlignedColumn _:
       return 'r';
   }
+}
+
+String _tableData(List<Row> rows) {
+  const doubleBackSlash = '\\';
+
+  if(rows.isNotEmpty) {
+    return '  Name$doubleBackSlash\n';
+  }
+  return '';
 }

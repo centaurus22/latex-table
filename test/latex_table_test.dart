@@ -2,6 +2,7 @@ import 'package:latex_table/latex_table.dart';
 import 'package:test/test.dart';
 
 void main() {
+  const doubleBackSlash = '\\';
   group('latex generation tests', () {
     test('generating base table', () {
       var result = parse(
@@ -38,6 +39,19 @@ void main() {
         ),
       );
       var value = '\\begin{tabular}{lr}\n\\end{tabular}';
+      expect(result.runtimeType, Success);
+      if (result is Success) {
+        expect(result.value, value);
+      }
+    });
+    test('generating table with one data cell', () {
+      var result = parse(
+        Table(
+          columnDefinitions: [LeftAlignedColumn()],
+          rows: [DataRow(fields: [Field(value: "Name")])],
+        ),
+      );
+      var value = '\\begin{tabular}{l}\n  Name$doubleBackSlash\n\\end{tabular}';
       expect(result.runtimeType, Success);
       if (result is Success) {
         expect(result.value, value);
