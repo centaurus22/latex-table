@@ -84,6 +84,8 @@ String _row(Row row, List<int> columnLengths) {
       return '${_dataRow(row.fields, columnLengths)}\n';
     case TopRule _:
       return '  \\toprule\n';
+    case BottomRule _:
+      return '  \\bottomrule\n';
     default:
       return '';
   }
