@@ -76,5 +76,24 @@ void main() {
         expect(result.value, value);
       }
     });
+    test('generating rows with two fields', () {
+      var result = parse(
+        Table(
+          columnDefinitions: [LeftAlignedColumn()],
+          rows: [
+            DataRow(fields: [Field(value: "Name"), Field(value: "Klaus")]),
+            DataRow(fields: [Field(value: "Name"), Field(value: "Stefan")])
+          ],
+        ),
+      );
+      var value = '\\begin{tabular}{l}\n'
+        '  Name & Klaus$doubleBackSlash\n'
+        '  Name & Stefan$doubleBackSlash\n'
+        '\\end{tabular}';
+      expect(result.runtimeType, Success);
+      if (result is Success) {
+        expect(result.value, value);
+      }
+    });
   });
 }

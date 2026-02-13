@@ -48,9 +48,23 @@ String _data(List<Row> rows) {
 String _row(Row row) {
   switch(row) {
     case DataRow _:
-      const doubleBackSlash = '\\';
-      return '  ${row.fields.first.value}$doubleBackSlash\n';
+      return '${_dataRow(row.fields)}\n';
     default:
       return '';
   }
+}
+
+String _dataRow(List<Field> fields) {
+  var numberFields = fields.length;
+  var fieldsString = ' ';
+  const doubleBackSlash = '\\';
+
+  for (var n = 0; n < numberFields; n++) {
+    if (n == numberFields - 1) {
+      fieldsString += ' ${fields[n].value}$doubleBackSlash';
+    } else {
+      fieldsString += ' ${fields[n].value} &';
+    }
+  }
+  return fieldsString;
 }
