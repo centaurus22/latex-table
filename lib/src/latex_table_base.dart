@@ -15,7 +15,7 @@ Result parse(Table table) {
   return Success(
     value:
         '\\begin{tabular}{${_alignmentCodes(table.columnDefinitions)}}\n'
-        '${_data(table.rows)}'
+        '${_data(table.rows, table.columnDefinitions.length)}'
         '\\end{tabular}',
   );
 }
@@ -23,7 +23,7 @@ Result parse(Table table) {
 String _alignmentCodes(List<ColumnDefinition> columnDefinitions) {
   return columnDefinitions.fold(
     '',
-    (codes, columnDefinition) => codes + _alignmentCode(columnDefinition),
+    (codes, columnDefinition) => codes + _alignmentCode(columnDefinition)
   );
 }
 
@@ -38,32 +38,65 @@ String _alignmentCode(ColumnDefinition columnDefinition) {
   }
 }
 
-String _data(List<Row> rows) {
+String _data(List<Row> rows, int numberColumns) {
+  List<int> columnLengths = rows.fold(
+    List.filled(numberColumns, 0, growable: false),
+    (currentLengths, row) => _maxLengths(currentLengths, row, numberColumns)
+  );
+
   return rows.fold(
     '',
-    (rows, row) => rows + _row(row),
+    (rows, row) => rows + _row(row, columnLengths),
   );
 }
 
-String _row(Row row) {
+List<int> _maxLengths(List<int> currentLengths, Row row, int numberColumns) {
   switch(row) {
     case DataRow _:
-      return '${_dataRow(row.fields)}\n';
+      return _maxLengthsData(currentLengths, row.fields, numberColumns);
+    default:
+      return currentLengths;
+  }
+}
+
+List<int> _maxLengthsData(
+  List<int> currentLengths,
+  List<Field> fields,
+  int numberColumns
+) {
+  var numberFields = fields.length;
+  for (var n = 0; n < numberFields; n++) {
+    if (n > numberColumns) {
+      break;
+    }
+
+    var numberChars = fields[n].value.length;
+    if (currentLengths[n] < numberChars) {
+      currentLengths[n] = numberChars;
+    }
+  }
+  return currentLengths;
+}
+
+String _row(Row row, List<int> columnLengths) {
+  switch(row) {
+    case DataRow _:
+      return '${_dataRow(row.fields, columnLengths)}\n';
     default:
       return '';
   }
 }
 
-String _dataRow(List<Field> fields) {
+String _dataRow(List<Field> fields, List<int> columnLengths) {
   var numberFields = fields.length;
   var fieldsString = ' ';
   const doubleBackSlash = '\\';
 
   for (var n = 0; n < numberFields; n++) {
     if (n == numberFields - 1) {
-      fieldsString += ' ${fields[n].value}$doubleBackSlash';
+      fieldsString += ' ${fields[n].value.padRight(columnLengths[n])}$doubleBackSlash';
     } else {
-      fieldsString += ' ${fields[n].value} &';
+      fieldsString += ' ${fields[n].value.padRight(columnLengths[n])} &';
     }
   }
   return fieldsString;

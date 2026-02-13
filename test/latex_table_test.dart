@@ -68,7 +68,7 @@ void main() {
         ),
       );
       var value = '\\begin{tabular}{l}\n'
-        '  Name$doubleBackSlash\n'
+        '  Name $doubleBackSlash\n'
         '  Klaus$doubleBackSlash\n'
         '\\end{tabular}';
       expect(result.runtimeType, Success);
@@ -79,16 +79,35 @@ void main() {
     test('generating rows with two fields', () {
       var result = parse(
         Table(
-          columnDefinitions: [LeftAlignedColumn()],
+          columnDefinitions: [LeftAlignedColumn(), RightAlignedColumn()],
           rows: [
             DataRow(fields: [Field(value: "Name"), Field(value: "Klaus")]),
             DataRow(fields: [Field(value: "Name"), Field(value: "Stefan")])
           ],
         ),
       );
-      var value = '\\begin{tabular}{l}\n'
-        '  Name & Klaus$doubleBackSlash\n'
+      var value = '\\begin{tabular}{lr}\n'
+        '  Name & Klaus $doubleBackSlash\n'
         '  Name & Stefan$doubleBackSlash\n'
+        '\\end{tabular}';
+      expect(result.runtimeType, Success);
+      if (result is Success) {
+        expect(result.value, value);
+      }
+    });
+    test('generating fields with variable lengths', () {
+      var result = parse(
+        Table(
+          columnDefinitions: [LeftAlignedColumn(), RightAlignedColumn()],
+          rows: [
+            DataRow(fields: [Field(value: "Name"), Field(value: "MegaSoftware")]),
+            DataRow(fields: [Field(value: "Version"), Field(value: "3.4.2")])
+          ],
+        ),
+      );
+      var value = '\\begin{tabular}{lr}\n'
+        '  Name    & MegaSoftware$doubleBackSlash\n'
+        '  Version & 3.4.2       $doubleBackSlash\n'
         '\\end{tabular}';
       expect(result.runtimeType, Success);
       if (result is Success) {
