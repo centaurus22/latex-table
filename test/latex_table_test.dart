@@ -173,5 +173,30 @@ void main() {
         expect(result.value, value);
       }
     });
+    test('generating midrule', () {
+      var result = parse(
+        Table(
+          columnDefinitions: [LeftAlignedColumn(), RightAlignedColumn()],
+          rows: [
+            TopRule(),
+            DataRow(fields: [Field(value: "Position"), Field(value: "Amount")]),
+            MidRule(),
+            DataRow(fields: [Field(value: "01"), EuroField(value: "15")]),
+            BottomRule()
+          ],
+        ),
+      );
+      var value = '\\begin{tabular}{lr}\n'
+        '  \\toprule\n'
+        '  Position & Amount  $doubleBackSlash\n'
+        '  \\midrule\n'
+        '  01       & \\EUR{15}$doubleBackSlash\n'
+        '  \\bottomrule\n'
+        '\\end{tabular}';
+      expect(result.runtimeType, Success);
+      if (result is Success) {
+        expect(result.value, value);
+      }
+    });
   });
 }

@@ -70,7 +70,16 @@ List<int> _maxLengthsData(
       break;
     }
 
-    var numberChars = fields[n].value.length;
+    int numberChars;
+    var field = fields[n];
+
+    switch(field) {
+      case EuroField _:
+        numberChars = field.value.length + 6;
+      default:
+        numberChars = field.value.length;
+    }
+
     if (currentLengths[n] < numberChars) {
       currentLengths[n] = numberChars;
     }
@@ -98,10 +107,20 @@ String _dataRow(List<Field> fields, List<int> columnLengths) {
 
   for (var n = 0; n < numberFields; n++) {
     if (n == numberFields - 1) {
-      fieldsString += ' ${fields[n].value.padRight(columnLengths[n])}$doubleBackSlash';
+      fieldsString += ' ${_field(fields[n], columnLengths[n])}$doubleBackSlash';
     } else {
-      fieldsString += ' ${fields[n].value.padRight(columnLengths[n])} &';
+      fieldsString += ' ${_field(fields[n], columnLengths[n])} &';
     }
   }
   return fieldsString;
+}
+
+String _field(Field field, int columnLength) {
+  var fieldString = field.value;
+
+  if (field is EuroField) { 
+    fieldString = '\\EUR{$fieldString}';
+  }
+
+  return fieldString.padRight(columnLength);
 }
