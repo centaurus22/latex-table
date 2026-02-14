@@ -1,11 +1,11 @@
 import 'package:latex_table/latex_table.dart';
 
 /// API function to transfer a [Table] into the latex source code of a table.
-/// 
+///
 /// Basically it returns an [Error] if the latex compiler would throw also
 /// an error. Otherwise a [Success] is returned. If the structure is
 /// malformed in other ways, it adds warnings to the [Result].
-/// 
+///
 /// * It returns an [Error] if no column is defined.
 Result parse(Table table) {
   if (table.columnDefinitions.isEmpty) {
@@ -23,7 +23,7 @@ Result parse(Table table) {
 String _alignmentCodes(List<ColumnDefinition> columnDefinitions) {
   return columnDefinitions.fold(
     '',
-    (codes, columnDefinition) => codes + _alignmentCode(columnDefinition)
+    (codes, columnDefinition) => codes + _alignmentCode(columnDefinition),
   );
 }
 
@@ -41,17 +41,14 @@ String _alignmentCode(ColumnDefinition columnDefinition) {
 String _data(List<Row> rows, int numberColumns) {
   List<int> columnLengths = rows.fold(
     List.filled(numberColumns, 0, growable: false),
-    (currentLengths, row) => _maxLengths(currentLengths, row, numberColumns)
+    (currentLengths, row) => _maxLengths(currentLengths, row, numberColumns),
   );
 
-  return rows.fold(
-    '',
-    (rows, row) => rows + _row(row, columnLengths),
-  );
+  return rows.fold('', (rows, row) => rows + _row(row, columnLengths));
 }
 
 List<int> _maxLengths(List<int> currentLengths, Row row, int numberColumns) {
-  switch(row) {
+  switch (row) {
     case DataRow _:
       return _maxLengthsData(currentLengths, row.fields, numberColumns);
     default:
@@ -62,7 +59,7 @@ List<int> _maxLengths(List<int> currentLengths, Row row, int numberColumns) {
 List<int> _maxLengthsData(
   List<int> currentLengths,
   List<Field> fields,
-  int numberColumns
+  int numberColumns,
 ) {
   var numberFields = fields.length;
   for (var n = 0; n < numberFields; n++) {
@@ -73,7 +70,7 @@ List<int> _maxLengthsData(
     int numberChars;
     var field = fields[n];
 
-    switch(field) {
+    switch (field) {
       case EuroField _:
         numberChars = field.value.length + 6;
       default:
@@ -88,7 +85,7 @@ List<int> _maxLengthsData(
 }
 
 String _row(Row row, List<int> columnLengths) {
-  switch(row) {
+  switch (row) {
     case DataRow _:
       return '${_dataRow(row.fields, columnLengths)}\n';
     case TopRule _:
@@ -118,7 +115,7 @@ String _dataRow(List<Field> fields, List<int> columnLengths) {
 String _field(Field field, int columnLength) {
   var fieldString = field.value;
 
-  if (field is EuroField) { 
+  if (field is EuroField) {
     fieldString = '\\EUR{$fieldString}';
   }
 

@@ -48,7 +48,9 @@ void main() {
       var result = parse(
         Table(
           columnDefinitions: [LeftAlignedColumn()],
-          rows: [DataRow(fields: [Field(value: "Name")])],
+          rows: [
+            DataRow(fields: [Field(value: "Name")]),
+          ],
         ),
       );
       var value = '\\begin{tabular}{l}\n  Name$doubleBackSlash\n\\end{tabular}';
@@ -63,14 +65,15 @@ void main() {
           columnDefinitions: [LeftAlignedColumn()],
           rows: [
             DataRow(fields: [Field(value: "Name")]),
-            DataRow(fields: [Field(value: "Klaus")])
+            DataRow(fields: [Field(value: "Klaus")]),
           ],
         ),
       );
-      var value = '\\begin{tabular}{l}\n'
-        '  Name $doubleBackSlash\n'
-        '  Klaus$doubleBackSlash\n'
-        '\\end{tabular}';
+      var value =
+          '\\begin{tabular}{l}\n'
+          '  Name $doubleBackSlash\n'
+          '  Klaus$doubleBackSlash\n'
+          '\\end{tabular}';
       expect(result.runtimeType, Success);
       if (result is Success) {
         expect(result.value, value);
@@ -81,15 +84,26 @@ void main() {
         Table(
           columnDefinitions: [LeftAlignedColumn(), RightAlignedColumn()],
           rows: [
-            DataRow(fields: [Field(value: "Name"), Field(value: "Klaus")]),
-            DataRow(fields: [Field(value: "Name"), Field(value: "Stefan")])
+            DataRow(
+              fields: [
+                Field(value: "Name"),
+                Field(value: "Klaus"),
+              ],
+            ),
+            DataRow(
+              fields: [
+                Field(value: "Name"),
+                Field(value: "Stefan"),
+              ],
+            ),
           ],
         ),
       );
-      var value = '\\begin{tabular}{lr}\n'
-        '  Name & Klaus $doubleBackSlash\n'
-        '  Name & Stefan$doubleBackSlash\n'
-        '\\end{tabular}';
+      var value =
+          '\\begin{tabular}{lr}\n'
+          '  Name & Klaus $doubleBackSlash\n'
+          '  Name & Stefan$doubleBackSlash\n'
+          '\\end{tabular}';
       expect(result.runtimeType, Success);
       if (result is Success) {
         expect(result.value, value);
@@ -100,15 +114,26 @@ void main() {
         Table(
           columnDefinitions: [LeftAlignedColumn(), RightAlignedColumn()],
           rows: [
-            DataRow(fields: [Field(value: "Name"), Field(value: "MegaSoftware")]),
-            DataRow(fields: [Field(value: "Version"), Field(value: "3.4.2")])
+            DataRow(
+              fields: [
+                Field(value: "Name"),
+                Field(value: "MegaSoftware"),
+              ],
+            ),
+            DataRow(
+              fields: [
+                Field(value: "Version"),
+                Field(value: "3.4.2"),
+              ],
+            ),
           ],
         ),
       );
-      var value = '\\begin{tabular}{lr}\n'
-        '  Name    & MegaSoftware$doubleBackSlash\n'
-        '  Version & 3.4.2       $doubleBackSlash\n'
-        '\\end{tabular}';
+      var value =
+          '\\begin{tabular}{lr}\n'
+          '  Name    & MegaSoftware$doubleBackSlash\n'
+          '  Version & 3.4.2       $doubleBackSlash\n'
+          '\\end{tabular}';
       expect(result.runtimeType, Success);
       if (result is Success) {
         expect(result.value, value);
@@ -120,14 +145,20 @@ void main() {
           columnDefinitions: [LeftAlignedColumn(), RightAlignedColumn()],
           rows: [
             TopRule(),
-            DataRow(fields: [Field(value: "Version"), Field(value: "3.4.2")])
+            DataRow(
+              fields: [
+                Field(value: "Version"),
+                Field(value: "3.4.2"),
+              ],
+            ),
           ],
         ),
       );
-      var value = '\\begin{tabular}{lr}\n'
-        '  \\toprule\n'
-        '  Version & 3.4.2$doubleBackSlash\n'
-        '\\end{tabular}';
+      var value =
+          '\\begin{tabular}{lr}\n'
+          '  \\toprule\n'
+          '  Version & 3.4.2$doubleBackSlash\n'
+          '\\end{tabular}';
       expect(result.runtimeType, Success);
       if (result is Success) {
         expect(result.value, value);
@@ -138,15 +169,21 @@ void main() {
         Table(
           columnDefinitions: [LeftAlignedColumn(), RightAlignedColumn()],
           rows: [
-            DataRow(fields: [Field(value: "Version"), Field(value: "3.4.2")]),
-            BottomRule()
+            DataRow(
+              fields: [
+                Field(value: "Version"),
+                Field(value: "3.4.2"),
+              ],
+            ),
+            BottomRule(),
           ],
         ),
       );
-      var value = '\\begin{tabular}{lr}\n'
-        '  Version & 3.4.2$doubleBackSlash\n'
-        '  \\bottomrule\n'
-        '\\end{tabular}';
+      var value =
+          '\\begin{tabular}{lr}\n'
+          '  Version & 3.4.2$doubleBackSlash\n'
+          '  \\bottomrule\n'
+          '\\end{tabular}';
       expect(result.runtimeType, Success);
       if (result is Success) {
         expect(result.value, value);
@@ -157,17 +194,28 @@ void main() {
         Table(
           columnDefinitions: [LeftAlignedColumn(), RightAlignedColumn()],
           rows: [
-            DataRow(fields: [Field(value: "Name"), Field(value: "Value")]),
+            DataRow(
+              fields: [
+                Field(value: "Name"),
+                Field(value: "Value"),
+              ],
+            ),
             MidRule(),
-            DataRow(fields: [Field(value: "Version"), Field(value: "3.4.2")]),
+            DataRow(
+              fields: [
+                Field(value: "Version"),
+                Field(value: "3.4.2"),
+              ],
+            ),
           ],
         ),
       );
-      var value = '\\begin{tabular}{lr}\n'
-        '  Name    & Value$doubleBackSlash\n'
-        '  \\midrule\n'
-        '  Version & 3.4.2$doubleBackSlash\n'
-        '\\end{tabular}';
+      var value =
+          '\\begin{tabular}{lr}\n'
+          '  Name    & Value$doubleBackSlash\n'
+          '  \\midrule\n'
+          '  Version & 3.4.2$doubleBackSlash\n'
+          '\\end{tabular}';
       expect(result.runtimeType, Success);
       if (result is Success) {
         expect(result.value, value);
@@ -179,20 +227,31 @@ void main() {
           columnDefinitions: [LeftAlignedColumn(), RightAlignedColumn()],
           rows: [
             TopRule(),
-            DataRow(fields: [Field(value: "Position"), Field(value: "Amount")]),
+            DataRow(
+              fields: [
+                Field(value: "Position"),
+                Field(value: "Amount"),
+              ],
+            ),
             MidRule(),
-            DataRow(fields: [Field(value: "01"), EuroField(value: "15")]),
-            BottomRule()
+            DataRow(
+              fields: [
+                Field(value: "01"),
+                EuroField(value: "15"),
+              ],
+            ),
+            BottomRule(),
           ],
         ),
       );
-      var value = '\\begin{tabular}{lr}\n'
-        '  \\toprule\n'
-        '  Position & Amount  $doubleBackSlash\n'
-        '  \\midrule\n'
-        '  01       & \\EUR{15}$doubleBackSlash\n'
-        '  \\bottomrule\n'
-        '\\end{tabular}';
+      var value =
+          '\\begin{tabular}{lr}\n'
+          '  \\toprule\n'
+          '  Position & Amount  $doubleBackSlash\n'
+          '  \\midrule\n'
+          '  01       & \\EUR{15}$doubleBackSlash\n'
+          '  \\bottomrule\n'
+          '\\end{tabular}';
       expect(result.runtimeType, Success);
       if (result is Success) {
         expect(result.value, value);
