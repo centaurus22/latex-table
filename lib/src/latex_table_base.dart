@@ -39,49 +39,69 @@ String _alignmentCode(ColumnDefinition columnDefinition) {
 }
 
 String _data(List<Row> rows, int numberColumns) {
-  List<int> columnLengths = rows.fold(
+  List<int> columnWidths = rows.fold(
     List.filled(numberColumns, 0, growable: false),
-    (currentLengths, row) => _maxLengths(currentLengths, row, numberColumns),
+    (currentLengths, row) =>
+        _updateColumWidthsByRow(currentLengths, row, numberColumns),
   );
 
-  return rows.fold('', (rows, row) => rows + _row(row, columnLengths));
+  return rows.fold('', (rows, row) => rows + _row(row, columnWidths));
 }
 
-List<int> _maxLengths(List<int> currentLengths, Row row, int numberColumns) {
+List<int> _updateColumWidthsByRow(
+  List<int> columnWidths,
+  Row row,
+  int numberColumns,
+) {
   switch (row) {
     case DataRow _:
-      return _maxLengthsData(currentLengths, row.fields, numberColumns);
+      return _updateColumWidthsByDataRow(
+        columnWidths,
+        row.fields,
+        numberColumns,
+      );
     default:
-      return currentLengths;
+      return columnWidths;
   }
 }
 
-List<int> _maxLengthsData(
-  List<int> currentLengths,
+List<int> _updateColumWidthsByDataRow(
+  List<int> columnWidths,
   List<Field> fields,
   int numberColumns,
 ) {
   var numberFields = fields.length;
+
   for (var n = 0; n < numberFields; n++) {
     if (n > numberColumns) {
       break;
     }
-
-    int numberChars;
-    var field = fields[n];
-
-    switch (field) {
-      case EuroField _:
-        numberChars = field.value.length + 6;
-      default:
-        numberChars = field.value.length;
-    }
-
-    if (currentLengths[n] < numberChars) {
-      currentLengths[n] = numberChars;
-    }
+    columnWidths = _updateColumWidthsByField(fields, columnWidths, n);
   }
-  return currentLengths;
+
+  return columnWidths;
+}
+
+List<int> _updateColumWidthsByField(
+  List<Field> fields,
+  List<int> columnWidths,
+  int fieldIndex,
+) {
+  int columnWidth;
+  var field = fields[fieldIndex];
+
+  switch (field) {
+    case EuroField _:
+      columnWidth = field.value.length + 6;
+    default:
+      columnWidth = field.value.length;
+  }
+
+  if (columnWidths[fieldIndex] < columnWidth) {
+    columnWidths[fieldIndex] = columnWidth;
+  }
+
+  return columnWidths;
 }
 
 String _row(Row row, List<int> columnLengths) {
@@ -103,10 +123,11 @@ String _dataRow(List<Field> fields, List<int> columnLengths) {
   const doubleBackSlash = '\\';
 
   for (var n = 0; n < numberFields; n++) {
+    var fieldString = _field(fields[n], columnLengths[n]);
     if (n == numberFields - 1) {
-      fieldsString += ' ${_field(fields[n], columnLengths[n])}$doubleBackSlash';
+      fieldsString += ' $fieldString$doubleBackSlash';
     } else {
-      fieldsString += ' ${_field(fields[n], columnLengths[n])} &';
+      fieldsString += ' $fieldString &';
     }
   }
   return fieldsString;
