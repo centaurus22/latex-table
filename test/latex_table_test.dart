@@ -144,7 +144,7 @@ void main() {
         Table(
           columnDefinitions: [LeftAlignedColumn(), RightAlignedColumn()],
           rows: [
-            TopRule(),
+            Rule(),
             DataRow(
               fields: [
                 Field(value: "Version"),
@@ -175,7 +175,7 @@ void main() {
                 Field(value: "3.4.2"),
               ],
             ),
-            BottomRule(),
+            Rule(),
           ],
         ),
       );
@@ -200,7 +200,7 @@ void main() {
                 Field(value: "Value"),
               ],
             ),
-            MidRule(),
+            Rule(),
             DataRow(
               fields: [
                 Field(value: "Version"),
@@ -226,21 +226,21 @@ void main() {
         Table(
           columnDefinitions: [LeftAlignedColumn(), RightAlignedColumn()],
           rows: [
-            TopRule(),
+            Rule(),
             DataRow(
               fields: [
                 Field(value: "Position"),
                 Field(value: "Amount"),
               ],
             ),
-            MidRule(),
+            Rule(),
             DataRow(
               fields: [
                 Field(value: "01"),
                 EuroField(value: "15"),
               ],
             ),
-            BottomRule(),
+            Rule(),
           ],
         ),
       );

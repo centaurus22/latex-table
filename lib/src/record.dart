@@ -39,37 +39,23 @@ class RightAlignedColumn extends ColumnDefinition {}
 ///
 /// This is the sealed base class.
 /// It can either be a [DataRow] that contains [Field]s with information
-/// or header, or a [TopRule], [MidRule] or [BottomRule] for the various
-/// styles of horizontal lines in scientific tables.
+/// or header, or a [Rule] for the various styles of horizontal lines in
+/// scientific tables.
 sealed class Row {}
 
-/// The horizontal line at the top of a scientific table.
+/// The horizontal line in a scientific table.
 ///
-/// The sealed base class is the [Row]. Other row-like objects are
-/// the [DataRow] that contains [Field]s with data or header, or a [MidRule]
-/// or [BottomRule] for the other styles of horizontal lines in a scientific
-/// tables.
-class TopRule extends Row {}
-
-/// The horizontal line inside a scientific table.
+/// It is converted to the `\toprule`, the `\midrule` or the `\bottomrule`
+/// command depending on its position in the table.
 ///
-/// The sealed base class is the [Row]. Other row-like objects are the [DataRow]
-/// that contains [Field]s with data or header, or a [TopRule] or [BottomRule]
-///  for the other styles of horizontal lines in a scientific tables.
-class MidRule extends Row {}
-
-/// The horizontal line at the bottom of a scientific table.
-///
-/// The sealed base class is the [Row]. Other row-like objects are the [DataRow]
-/// that contains [Field]s with data or header, or a [TopRule] or [MidRule]
-/// for the other styles of horizontal lines in a scientific tables.
-class BottomRule extends Row {}
+/// The sealed base class is the [Row]. The other row-like objects is the
+/// [DataRow] that contains [Field]s with data or header.
+class Rule extends Row {}
 
 /// A row of table data or header.
 ///
-/// The sealed base class is the [Row]. Other rows or the [TopRule] [MidRule]
-/// and [BottomRule] for the various styles of horizontal lines in
-/// a scientific tables.
+/// The sealed base class is the [Row]. The other rows is the [Rule] for the various
+/// styles of horizontal lines in a scientific tables.
 class DataRow extends Row {
   /// A [List] of [Field]s in one row.
   ///

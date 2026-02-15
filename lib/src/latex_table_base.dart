@@ -44,8 +44,12 @@ String _data(List<Row> rows, int numberColumns) {
     (currentLengths, row) =>
         _updateColumWidthsByRow(currentLengths, row, numberColumns),
   );
-
-  return rows.fold('', (rows, row) => rows + _row(row, columnWidths));
+  var rowsString = '';
+  var numberRows = rows.length;
+  for (var n = 0; n < numberRows; n++) {
+    rowsString += '${_row(rows[n], columnWidths, numberRows, n)}\n';
+  }
+  return rowsString;
 }
 
 List<int> _updateColumWidthsByRow(
@@ -104,16 +108,18 @@ List<int> _updateColumWidthsByField(
   return columnWidths;
 }
 
-String _row(Row row, List<int> columnLengths) {
+String _row(Row row, List<int> columnWidths, int numberRows, int rowIndex) {
   switch (row) {
     case DataRow _:
-      return '${_dataRow(row.fields, columnLengths)}\n';
-    case TopRule _:
-      return '  \\toprule\n';
-    case MidRule _:
-      return '  \\midrule\n';
-    case BottomRule _:
-      return '  \\bottomrule\n';
+      return _dataRow(row.fields, columnWidths);
+    case Rule _:
+      if (rowIndex == 0) {
+        return '  \\toprule';
+      } else if (rowIndex == numberRows - 1) {
+        return '  \\bottomrule';
+      } else {
+        return '  \\midrule';
+      }
   }
 }
 
