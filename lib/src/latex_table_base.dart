@@ -31,9 +31,8 @@ Result _analyse(Table table) {
 
   var numberColumns = table.columnDefinitions.length;
   List<int> columnWidths = table.rows.fold(
-    List.filled(numberColumns, 0, growable: false),
-    (currentLengths, row) =>
-        _updateColumWidthsByRow(currentLengths, row, numberColumns),
+    List.filled(numberColumns, 0, growable: true),
+    (currentLengths, row) => _updateColumWidthsByRow(currentLengths, row),
   );
 
   return Success(value: columnWidths);
@@ -66,18 +65,10 @@ String _parseData(List<Row> rows, List<int> columnWidths) {
   return rowsString;
 }
 
-List<int> _updateColumWidthsByRow(
-  List<int> columnWidths,
-  Row row,
-  int numberColumns,
-) {
+List<int> _updateColumWidthsByRow(List<int> columnWidths, Row row) {
   switch (row) {
     case DataRow _:
-      return _updateColumWidthsByDataRow(
-        columnWidths,
-        row.fields,
-        numberColumns,
-      );
+      return _updateColumWidthsByDataRow(columnWidths, row.fields);
     default:
       return columnWidths;
   }
@@ -86,14 +77,10 @@ List<int> _updateColumWidthsByRow(
 List<int> _updateColumWidthsByDataRow(
   List<int> columnWidths,
   List<Field> fields,
-  int numberColumns,
 ) {
   var numberFields = fields.length;
 
   for (var n = 0; n < numberFields; n++) {
-    if (n > numberColumns) {
-      break;
-    }
     columnWidths = _updateColumWidthsByField(fields, columnWidths, n);
   }
 
@@ -115,7 +102,9 @@ List<int> _updateColumWidthsByField(
       columnWidth = field.value.length;
   }
 
-  if (columnWidths[fieldIndex] < columnWidth) {
+  if (columnWidths.length < fieldIndex + 1) {
+    columnWidths.add(columnWidth);
+  } else if (columnWidths[fieldIndex] < columnWidth) {
     columnWidths[fieldIndex] = columnWidth;
   }
 
@@ -142,14 +131,14 @@ String _parseRow(
   }
 }
 
-String _parseDataRow(List<Field> fields, List<int> columnLengths) {
+String _parseDataRow(List<Field> fields, List<int> columnWidths) {
   var numberFields = fields.length;
   var fieldsString = ' ';
   const doubleBackSlash = '\\';
 
   for (var n = 0; n < numberFields; n++) {
-    var fieldString = _parseField(fields[n], columnLengths[n]);
-    if (n == numberFields - 1) {
+    var fieldString = _parseField(fields, n).padRight(columnWidths[n]);
+    if (n >= numberFields - 1) {
       fieldsString += ' $fieldString';
     } else {
       fieldsString += ' $fieldString &';
@@ -158,12 +147,13 @@ String _parseDataRow(List<Field> fields, List<int> columnLengths) {
   return '$fieldsString $doubleBackSlash';
 }
 
-String _parseField(Field field, int columnLength) {
-  var fieldString = field.value;
+String _parseField(List<Field> fields, int fieldIndex) {
+  var field = fields[fieldIndex];
+  var value = field.value;
 
   if (field is EuroField) {
-    fieldString = '\\EUR{$fieldString}';
+    return '\\EUR{$value}';
   }
 
-  return fieldString.padRight(columnLength);
+  return value;
 }

@@ -309,4 +309,35 @@ void main() {
       expect(result.value, value);
     }
   });
+  test('one cell to much', () {
+    var result = parse(
+      Table(
+        columnDefinitions: [LeftAlignedColumn(), RightAlignedColumn()],
+        rows: [
+          DataRow(
+            fields: [
+              Field(value: "Position"),
+              Field(value: "Amount"),
+            ],
+          ),
+          DataRow(
+            fields: [
+              Field(value: "01"),
+              EuroField(value: "15"),
+              EuroField(value: "23"),
+            ],
+          ),
+        ],
+      ),
+    );
+    var value =
+        '\\begin{tabular}{lr}\n'
+        '  Position & Amount   $doubleBackSlash\n'
+        '  01       & \\EUR{15} & \\EUR{23} $doubleBackSlash\n'
+        '\\end{tabular}';
+    expect(result.runtimeType, Success);
+    if (result is Success) {
+      expect(result.value, value);
+    }
+  });
 }
