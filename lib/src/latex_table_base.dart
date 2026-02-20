@@ -8,16 +8,35 @@ import 'package:latex_table/latex_table.dart';
 ///
 /// * It returns an [Error] if no column is defined.
 Result parse(Table table) {
+  var result = _analyse(table);
+
+  if (result is Success) {
+    List<int> columnWidths = result.value;
+
+    return Success(
+      value:
+          '\\begin{tabular}{${_alignmentCodes(table.columnDefinitions)}}\n'
+          '${_parseData(table.rows, columnWidths)}'
+          '\\end{tabular}',
+    );
+  }
+
+  return result;
+}
+
+Result _analyse(Table table) {
   if (table.columnDefinitions.isEmpty) {
     return Error(message: 'The table must have at least one column.');
   }
 
-  return Success(
-    value:
-        '\\begin{tabular}{${_alignmentCodes(table.columnDefinitions)}}\n'
-        '${_data(table.rows, table.columnDefinitions.length)}'
-        '\\end{tabular}',
+  var numberColumns = table.columnDefinitions.length;
+  List<int> columnWidths = table.rows.fold(
+    List.filled(numberColumns, 0, growable: false),
+    (currentLengths, row) =>
+        _updateColumWidthsByRow(currentLengths, row, numberColumns),
   );
+
+  return Success(value: columnWidths);
 }
 
 String _alignmentCodes(List<ColumnDefinition> columnDefinitions) {
@@ -38,16 +57,11 @@ String _alignmentCode(ColumnDefinition columnDefinition) {
   }
 }
 
-String _data(List<Row> rows, int numberColumns) {
-  List<int> columnWidths = rows.fold(
-    List.filled(numberColumns, 0, growable: false),
-    (currentLengths, row) =>
-        _updateColumWidthsByRow(currentLengths, row, numberColumns),
-  );
+String _parseData(List<Row> rows, List<int> columnWidths) {
   var rowsString = '';
   var numberRows = rows.length;
   for (var n = 0; n < numberRows; n++) {
-    rowsString += '${_row(rows[n], columnWidths, numberRows, n)}\n';
+    rowsString += '${_parseRow(rows[n], columnWidths, numberRows, n)}\n';
   }
   return rowsString;
 }
@@ -108,10 +122,15 @@ List<int> _updateColumWidthsByField(
   return columnWidths;
 }
 
-String _row(Row row, List<int> columnWidths, int numberRows, int rowIndex) {
+String _parseRow(
+  Row row,
+  List<int> columnWidths,
+  int numberRows,
+  int rowIndex,
+) {
   switch (row) {
     case DataRow _:
-      return _dataRow(row.fields, columnWidths);
+      return _parseDataRow(row.fields, columnWidths);
     case Rule _:
       if (rowIndex == 0) {
         return '  \\toprule';
@@ -123,13 +142,13 @@ String _row(Row row, List<int> columnWidths, int numberRows, int rowIndex) {
   }
 }
 
-String _dataRow(List<Field> fields, List<int> columnLengths) {
+String _parseDataRow(List<Field> fields, List<int> columnLengths) {
   var numberFields = fields.length;
   var fieldsString = ' ';
   const doubleBackSlash = '\\';
 
   for (var n = 0; n < numberFields; n++) {
-    var fieldString = _field(fields[n], columnLengths[n]);
+    var fieldString = _parseField(fields[n], columnLengths[n]);
     if (n == numberFields - 1) {
       fieldsString += ' $fieldString$doubleBackSlash';
     } else {
@@ -139,7 +158,7 @@ String _dataRow(List<Field> fields, List<int> columnLengths) {
   return fieldsString;
 }
 
-String _field(Field field, int columnLength) {
+String _parseField(Field field, int columnLength) {
   var fieldString = field.value;
 
   if (field is EuroField) {
