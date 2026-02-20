@@ -53,7 +53,8 @@ void main() {
           ],
         ),
       );
-      var value = '\\begin{tabular}{l}\n  Name$doubleBackSlash\n\\end{tabular}';
+      var value =
+          '\\begin{tabular}{l}\n  Name $doubleBackSlash\n\\end{tabular}';
       expect(result.runtimeType, Success);
       if (result is Success) {
         expect(result.value, value);
@@ -277,6 +278,31 @@ void main() {
         '\\begin{tabular}{lr}\n'
         '  Position & Amount $doubleBackSlash\n'
         '  01       $doubleBackSlash\n'
+        '\\end{tabular}';
+    expect(result.runtimeType, Success);
+    if (result is Success) {
+      expect(result.value, value);
+    }
+  });
+  test('all cells missing', () {
+    var result = parse(
+      Table(
+        columnDefinitions: [LeftAlignedColumn(), RightAlignedColumn()],
+        rows: [
+          DataRow(
+            fields: [
+              Field(value: "Position"),
+              Field(value: "Amount"),
+            ],
+          ),
+          DataRow(fields: []),
+        ],
+      ),
+    );
+    var value =
+        '\\begin{tabular}{lr}\n'
+        '  Position & Amount $doubleBackSlash\n'
+        '  $doubleBackSlash\n'
         '\\end{tabular}';
     expect(result.runtimeType, Success);
     if (result is Success) {
