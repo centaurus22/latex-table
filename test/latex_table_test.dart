@@ -71,8 +71,8 @@ void main() {
       );
       var value =
           '\\begin{tabular}{l}\n'
-          '  Name $doubleBackSlash\n'
-          '  Klaus$doubleBackSlash\n'
+          '  Name  $doubleBackSlash\n'
+          '  Klaus $doubleBackSlash\n'
           '\\end{tabular}';
       expect(result.runtimeType, Success);
       if (result is Success) {
@@ -101,8 +101,8 @@ void main() {
       );
       var value =
           '\\begin{tabular}{lr}\n'
-          '  Name & Klaus $doubleBackSlash\n'
-          '  Name & Stefan$doubleBackSlash\n'
+          '  Name & Klaus  $doubleBackSlash\n'
+          '  Name & Stefan $doubleBackSlash\n'
           '\\end{tabular}';
       expect(result.runtimeType, Success);
       if (result is Success) {
@@ -131,8 +131,8 @@ void main() {
       );
       var value =
           '\\begin{tabular}{lr}\n'
-          '  Name    & MegaSoftware$doubleBackSlash\n'
-          '  Version & 3.4.2       $doubleBackSlash\n'
+          '  Name    & MegaSoftware $doubleBackSlash\n'
+          '  Version & 3.4.2        $doubleBackSlash\n'
           '\\end{tabular}';
       expect(result.runtimeType, Success);
       if (result is Success) {
@@ -157,7 +157,7 @@ void main() {
       var value =
           '\\begin{tabular}{lr}\n'
           '  \\toprule\n'
-          '  Version & 3.4.2$doubleBackSlash\n'
+          '  Version & 3.4.2 $doubleBackSlash\n'
           '\\end{tabular}';
       expect(result.runtimeType, Success);
       if (result is Success) {
@@ -181,7 +181,7 @@ void main() {
       );
       var value =
           '\\begin{tabular}{lr}\n'
-          '  Version & 3.4.2$doubleBackSlash\n'
+          '  Version & 3.4.2 $doubleBackSlash\n'
           '  \\bottomrule\n'
           '\\end{tabular}';
       expect(result.runtimeType, Success);
@@ -212,9 +212,9 @@ void main() {
       );
       var value =
           '\\begin{tabular}{lr}\n'
-          '  Name    & Value$doubleBackSlash\n'
+          '  Name    & Value $doubleBackSlash\n'
           '  \\midrule\n'
-          '  Version & 3.4.2$doubleBackSlash\n'
+          '  Version & 3.4.2 $doubleBackSlash\n'
           '\\end{tabular}';
       expect(result.runtimeType, Success);
       if (result is Success) {
@@ -247,9 +247,9 @@ void main() {
       var value =
           '\\begin{tabular}{lr}\n'
           '  \\toprule\n'
-          '  Position & Amount  $doubleBackSlash\n'
+          '  Position & Amount   $doubleBackSlash\n'
           '  \\midrule\n'
-          '  01       & \\EUR{15}$doubleBackSlash\n'
+          '  01       & \\EUR{15} $doubleBackSlash\n'
           '  \\bottomrule\n'
           '\\end{tabular}';
       expect(result.runtimeType, Success);
@@ -257,5 +257,30 @@ void main() {
         expect(result.value, value);
       }
     });
+  });
+  test('one missing cell', () {
+    var result = parse(
+      Table(
+        columnDefinitions: [LeftAlignedColumn(), RightAlignedColumn()],
+        rows: [
+          DataRow(
+            fields: [
+              Field(value: "Position"),
+              Field(value: "Amount"),
+            ],
+          ),
+          DataRow(fields: [Field(value: "01")]),
+        ],
+      ),
+    );
+    var value =
+        '\\begin{tabular}{lr}\n'
+        '  Position & Amount $doubleBackSlash\n'
+        '  01       $doubleBackSlash\n'
+        '\\end{tabular}';
+    expect(result.runtimeType, Success);
+    if (result is Success) {
+      expect(result.value, value);
+    }
   });
 }

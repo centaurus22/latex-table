@@ -150,7 +150,7 @@ String _parseDataRow(List<Field> fields, List<int> columnLengths) {
   for (var n = 0; n < numberFields; n++) {
     var fieldString = _parseField(fields[n], columnLengths[n]);
     if (n == numberFields - 1) {
-      fieldsString += ' $fieldString$doubleBackSlash';
+      fieldsString += ' $fieldString $doubleBackSlash';
     } else {
       fieldsString += ' $fieldString &';
     }
