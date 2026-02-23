@@ -366,4 +366,24 @@ void main() {
       expect(result.value, value);
     }
   });
+  test('warning if to much cells', () {
+    var result = parse(
+      Table(
+        columnDefinitions: [LeftAlignedColumn()],
+        rows: [
+          DataRow(fields: [Field(value: "Position")]),
+          DataRow(
+            fields: [
+              Field(value: "01"),
+              EuroField(value: "15"),
+            ],
+          ),
+        ],
+      ),
+    );
+    expect(result.runtimeType, Success);
+    if (result is Success) {
+      expect(result.warnings.length, 1);
+    }
+  });
 }

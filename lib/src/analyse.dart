@@ -2,43 +2,76 @@ import 'record.dart';
 
 Result analyse(Table table) {
   if (table.columnDefinitions.isEmpty) {
-    return Error(message: 'The table must have at least one column.');
+    return Error(
+      message: 'The table must have at least one column.',
+      warnings: [],
+    );
   }
 
+  var rows = table.rows;
   var numberColumns = table.columnDefinitions.length;
-  List<int> columnWidths = table.rows.fold(
-    List.filled(numberColumns, 0, growable: true),
-    (currentLengths, row) => _updateColumWidthsByRow(currentLengths, row),
+  var numberRows = rows.length;
+  var analyseResult = AnalyseResult(
+    columnWidths: List.filled(numberColumns, 0, growable: true),
+    warnings: [],
   );
 
-  return Success(value: columnWidths);
+  for (var n = 0; n < numberRows; n++) {
+    analyseResult = _updateColumWidthsByRow(
+      analyseResult,
+      rows[n],
+      numberColumns,
+      n,
+    );
+  }
+
+  return Success(
+    value: analyseResult.columnWidths,
+    warnings: analyseResult.warnings,
+  );
 }
 
-List<int> _updateColumWidthsByRow(List<int> columnWidths, Row row) {
+AnalyseResult _updateColumWidthsByRow(
+  AnalyseResult analyseResult,
+  Row row,
+  int numberColumns,
+  int rowIndex,
+) {
   switch (row) {
     case DataRow _:
-      return _updateColumWidthsByDataRow(columnWidths, row.fields);
+      return _updateColumWidthsByDataRow(
+        analyseResult,
+        row.fields,
+        numberColumns,
+        rowIndex,
+      );
     default:
-      return columnWidths;
+      return analyseResult;
   }
 }
 
-List<int> _updateColumWidthsByDataRow(
-  List<int> columnWidths,
+AnalyseResult _updateColumWidthsByDataRow(
+  AnalyseResult analyseResult,
   List<Field> fields,
+  int numberColumns,
+  int rowIndex,
 ) {
   var numberFields = fields.length;
 
-  for (var n = 0; n < numberFields; n++) {
-    columnWidths = _updateColumWidthsByField(fields, columnWidths, n);
+  if (numberFields > numberColumns) {
+    analyseResult.warnings.add('Row ${rowIndex + 1} has to much cells.');
   }
 
-  return columnWidths;
+  for (var n = 0; n < numberFields; n++) {
+    analyseResult = _updateColumWidthsByField(analyseResult, fields, n);
+  }
+
+  return analyseResult;
 }
 
-List<int> _updateColumWidthsByField(
+AnalyseResult _updateColumWidthsByField(
+  AnalyseResult analyseResult,
   List<Field> fields,
-  List<int> columnWidths,
   int fieldIndex,
 ) {
   int columnWidth;
@@ -51,11 +84,11 @@ List<int> _updateColumWidthsByField(
       columnWidth = field.value.length;
   }
 
-  if (columnWidths.length < fieldIndex + 1) {
-    columnWidths.add(columnWidth);
-  } else if (columnWidths[fieldIndex] < columnWidth) {
-    columnWidths[fieldIndex] = columnWidth;
+  if (analyseResult.columnWidths.length < fieldIndex + 1) {
+    analyseResult.columnWidths.add(columnWidth);
+  } else if (analyseResult.columnWidths[fieldIndex] < columnWidth) {
+    analyseResult.columnWidths[fieldIndex] = columnWidth;
   }
 
-  return columnWidths;
+  return analyseResult;
 }

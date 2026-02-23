@@ -96,7 +96,9 @@ class EuroField extends Field {
 /// or additional [warnings].
 sealed class Result {
   /// A list of warnings.
-  final List<String> warnings = [];
+  final List<String> warnings;
+
+  Result({required this.warnings});
 }
 
 /// This is returned when functions are executed correctly.
@@ -108,7 +110,7 @@ class Success extends Result {
   final dynamic value;
 
   /// This requires the embedded [value].
-  Success({required this.value});
+  Success({required this.value, required super.warnings});
 }
 
 /// This is returned when a parameter is not valid.
@@ -121,5 +123,12 @@ class Error extends Result {
   final String message;
 
   /// This requires the error [message].
-  Error({required this.message});
+  Error({required this.message, required super.warnings});
+}
+
+class AnalyseResult {
+  final List<int> columnWidths;
+  final List<String> warnings;
+
+  AnalyseResult({required this.columnWidths, required this.warnings});
 }

@@ -20,6 +20,7 @@ Result parse(Table table) {
           '\\begin{tabular}{${parseColumns(table.columnDefinitions)}}\n'
           '${parseData(table.rows, columnWidths)}'
           '\\end{tabular}',
+      warnings: result.warnings,
     );
   }
 
