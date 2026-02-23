@@ -98,6 +98,7 @@ sealed class Result {
   /// A list of warnings.
   final List<String> warnings;
 
+  /// This requires the [warnings].
   Result({required this.warnings});
 }
 
@@ -109,7 +110,7 @@ class Success extends Result {
   /// The embedded value.
   final dynamic value;
 
-  /// This requires the embedded [value].
+  /// This requires the embedded [value] and the [warnings].
   Success({required this.value, required super.warnings});
 }
 
@@ -122,10 +123,11 @@ class Error extends Result {
   /// The error message.
   final String message;
 
-  /// This requires the error [message].
+  /// This requires the error [message] and the [warnings].
   Error({required this.message, required super.warnings});
 }
 
+/// Internal record
 class AnalyseResult {
   final List<int> columnWidths;
   final List<String> warnings;
