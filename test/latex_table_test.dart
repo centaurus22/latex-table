@@ -366,7 +366,7 @@ void main() {
       expect(result.value, value);
     }
   });
-  test('warning if to much cells', () {
+  test('warning if too much cells', () {
     var result = parse(
       Table(
         columnDefinitions: [LeftAlignedColumn()],
@@ -378,6 +378,21 @@ void main() {
               EuroField(value: "15"),
             ],
           ),
+        ],
+      ),
+    );
+    expect(result.runtimeType, Success);
+    if (result is Success) {
+      expect(result.warnings.length, 1);
+    }
+  });
+  test('warning if too few cells', () {
+    var result = parse(
+      Table(
+        columnDefinitions: [LeftAlignedColumn()],
+        rows: [
+          DataRow(fields: [Field(value: "Position")]),
+          DataRow(fields: []),
         ],
       ),
     );
