@@ -59,7 +59,7 @@ AnalyseResult _updateColumWidthsByDataRow(
   var numberFields = fields.length;
 
   if (numberFields > numberColumns) {
-    analyseResult.warnings.add('Row ${rowIndex + 1} has too much cells.');
+    analyseResult.warnings.add('Row ${rowIndex + 1} has too many cells.');
   } else if (numberFields < numberColumns) {
     analyseResult.warnings.add('Row ${rowIndex + 1} has too few cells.');
   }
