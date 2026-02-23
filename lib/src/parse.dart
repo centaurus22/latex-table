@@ -50,7 +50,7 @@ String _parseRow(
 String _parseDataRow(List<Field> fields, List<int> columnWidths) {
   var numberFields = fields.length;
   var fieldsString = ' ';
-  const doubleBackSlash = '\\';
+  const doubleBackSlash = '\\\\';
 
   for (var n = 0; n < numberFields; n++) {
     var fieldString = _parseField(fields, n).padRight(columnWidths[n]);

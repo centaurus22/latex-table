@@ -2,7 +2,7 @@ import 'package:latex_table/latex_table.dart';
 import 'package:test/test.dart';
 
 void main() {
-  const doubleBackSlash = '\\';
+  const doubleBackSlash = '\\\\';
   group('latex generation tests', () {
     test('generating base table', () {
       var result = parse(
