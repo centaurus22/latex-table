@@ -9,6 +9,8 @@ import 'record.dart';
 /// malformed in other ways, it adds warnings to the [Result].
 ///
 /// * It returns an [Error] if no column is defined.
+/// * It adds warnings if the number of columns in a data row differs from the
+///   the number of columns in the column definitions.
 Result parse(Table table) {
   var result = analyse(table);
 
