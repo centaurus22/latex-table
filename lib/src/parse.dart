@@ -1,6 +1,12 @@
 import 'record.dart';
 
-String parseColumns(List<ColumnDefinition> columnDefinitions) {
+String parse(Table table, List<int> columnWidths) {
+  return '\\begin{tabular}{${_parseColumns(table.columnDefinitions)}}\n'
+      '${_parseData(table.rows, columnWidths)}'
+      '\\end{tabular}';
+}
+
+String _parseColumns(List<ColumnDefinition> columnDefinitions) {
   return columnDefinitions.fold(
     '',
     (codes, columnDefinition) => codes + _parseColumn(columnDefinition),
@@ -18,7 +24,7 @@ String _parseColumn(ColumnDefinition columnDefinition) {
   }
 }
 
-String parseData(List<Row> rows, List<int> columnWidths) {
+String _parseData(List<Row> rows, List<int> columnWidths) {
   var rowsString = '';
   var numberRows = rows.length;
   for (var n = 0; n < numberRows; n++) {

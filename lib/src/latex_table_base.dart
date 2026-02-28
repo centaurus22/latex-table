@@ -1,4 +1,4 @@
-import 'analyse.dart';
+import 'analyze.dart';
 import 'parse.dart';
 import 'record.dart';
 
@@ -11,17 +11,14 @@ import 'record.dart';
 /// * It returns an [Error] if no column is defined.
 /// * It adds warnings if the number of columns in a data row differs from the
 ///   the number of columns in the column definitions.
-Result parse(Table table) {
-  var result = analyse(table);
+Result parseTable(Table table) {
+  var result = analyze(table);
 
   if (result is Success) {
     List<int> columnWidths = result.value;
 
     return Success(
-      value:
-          '\\begin{tabular}{${parseColumns(table.columnDefinitions)}}\n'
-          '${parseData(table.rows, columnWidths)}'
-          '\\end{tabular}',
+      value: parse(table, columnWidths),
       warnings: result.warnings,
     );
   }

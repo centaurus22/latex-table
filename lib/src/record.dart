@@ -128,9 +128,9 @@ class Error extends Result {
 }
 
 /// Internal record
-class AnalyseResult {
+class AnalyzeResult {
   final List<int> columnWidths;
   final List<String> warnings;
 
-  AnalyseResult({required this.columnWidths, required this.warnings});
+  AnalyzeResult({required this.columnWidths, required this.warnings});
 }

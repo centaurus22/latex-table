@@ -1,6 +1,6 @@
 import 'record.dart';
 
-Result analyse(Table table) {
+Result analyze(Table table) {
   if (table.columnDefinitions.isEmpty) {
     return Error(
       message: 'The table must have at least one column.',
@@ -11,14 +11,14 @@ Result analyse(Table table) {
   var rows = table.rows;
   var numberColumns = table.columnDefinitions.length;
   var numberRows = rows.length;
-  var analyseResult = AnalyseResult(
+  var analyzeResult = AnalyzeResult(
     columnWidths: List.filled(numberColumns, 0, growable: true),
     warnings: [],
   );
 
   for (var n = 0; n < numberRows; n++) {
-    analyseResult = _updateColumWidthsByRow(
-      analyseResult,
+    analyzeResult = _updateColumWidthsByRow(
+      analyzeResult,
       rows[n],
       numberColumns,
       n,
@@ -26,13 +26,13 @@ Result analyse(Table table) {
   }
 
   return Success(
-    value: analyseResult.columnWidths,
-    warnings: analyseResult.warnings,
+    value: analyzeResult.columnWidths,
+    warnings: analyzeResult.warnings,
   );
 }
 
-AnalyseResult _updateColumWidthsByRow(
-  AnalyseResult analyseResult,
+AnalyzeResult _updateColumWidthsByRow(
+  AnalyzeResult analyzeResult,
   Row row,
   int numberColumns,
   int rowIndex,
@@ -40,18 +40,18 @@ AnalyseResult _updateColumWidthsByRow(
   switch (row) {
     case DataRow _:
       return _updateColumWidthsByDataRow(
-        analyseResult,
+        analyzeResult,
         row.fields,
         numberColumns,
         rowIndex,
       );
     default:
-      return analyseResult;
+      return analyzeResult;
   }
 }
 
-AnalyseResult _updateColumWidthsByDataRow(
-  AnalyseResult analyseResult,
+AnalyzeResult _updateColumWidthsByDataRow(
+  AnalyzeResult analyzeResult,
   List<Field> fields,
   int numberColumns,
   int rowIndex,
@@ -59,20 +59,20 @@ AnalyseResult _updateColumWidthsByDataRow(
   var numberFields = fields.length;
 
   if (numberFields > numberColumns) {
-    analyseResult.warnings.add('Row ${rowIndex + 1} has too many cells.');
+    analyzeResult.warnings.add('Row ${rowIndex + 1} has too many cells.');
   } else if (numberFields < numberColumns) {
-    analyseResult.warnings.add('Row ${rowIndex + 1} has too few cells.');
+    analyzeResult.warnings.add('Row ${rowIndex + 1} has too few cells.');
   }
 
   for (var n = 0; n < numberFields; n++) {
-    analyseResult = _updateColumWidthsByField(analyseResult, fields, n);
+    analyzeResult = _updateColumWidthsByField(analyzeResult, fields, n);
   }
 
-  return analyseResult;
+  return analyzeResult;
 }
 
-AnalyseResult _updateColumWidthsByField(
-  AnalyseResult analyseResult,
+AnalyzeResult _updateColumWidthsByField(
+  AnalyzeResult analyzeResult,
   List<Field> fields,
   int fieldIndex,
 ) {
@@ -86,11 +86,11 @@ AnalyseResult _updateColumWidthsByField(
       columnWidth = field.value.length;
   }
 
-  if (analyseResult.columnWidths.length < fieldIndex + 1) {
-    analyseResult.columnWidths.add(columnWidth);
-  } else if (analyseResult.columnWidths[fieldIndex] < columnWidth) {
-    analyseResult.columnWidths[fieldIndex] = columnWidth;
+  if (analyzeResult.columnWidths.length < fieldIndex + 1) {
+    analyzeResult.columnWidths.add(columnWidth);
+  } else if (analyzeResult.columnWidths[fieldIndex] < columnWidth) {
+    analyzeResult.columnWidths[fieldIndex] = columnWidth;
   }
 
-  return analyseResult;
+  return analyzeResult;
 }

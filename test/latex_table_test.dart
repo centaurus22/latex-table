@@ -5,7 +5,7 @@ void main() {
   const doubleBackSlash = '\\\\';
   group('latex generation tests', () {
     test('generating base table', () {
-      var result = parse(
+      var result = parseTable(
         Table(columnDefinitions: [CenteredColumn()], rows: []),
       );
       var value = '\\begin{tabular}{c}\n\\end{tabular}';
@@ -15,14 +15,14 @@ void main() {
       }
     });
     test('whether error is returned when no column is defined', () {
-      var error = parse(Table(columnDefinitions: [], rows: []));
+      var error = parseTable(Table(columnDefinitions: [], rows: []));
       expect(error.runtimeType, Error);
       if (error is Error) {
         expect(error.message.isNotEmpty, true);
       }
     });
     test('generating table with left aligned column', () {
-      var result = parse(
+      var result = parseTable(
         Table(columnDefinitions: [LeftAlignedColumn()], rows: []),
       );
       var value = '\\begin{tabular}{l}\n\\end{tabular}';
@@ -32,7 +32,7 @@ void main() {
       }
     });
     test('generating table with two columns', () {
-      var result = parse(
+      var result = parseTable(
         Table(
           columnDefinitions: [LeftAlignedColumn(), RightAlignedColumn()],
           rows: [],
@@ -45,7 +45,7 @@ void main() {
       }
     });
     test('generating table with one data cell', () {
-      var result = parse(
+      var result = parseTable(
         Table(
           columnDefinitions: [LeftAlignedColumn()],
           rows: [
@@ -61,7 +61,7 @@ void main() {
       }
     });
     test('generating table with two rows', () {
-      var result = parse(
+      var result = parseTable(
         Table(
           columnDefinitions: [LeftAlignedColumn()],
           rows: [
@@ -81,7 +81,7 @@ void main() {
       }
     });
     test('generating rows with two fields', () {
-      var result = parse(
+      var result = parseTable(
         Table(
           columnDefinitions: [LeftAlignedColumn(), RightAlignedColumn()],
           rows: [
@@ -111,7 +111,7 @@ void main() {
       }
     });
     test('generating fields with variable lengths', () {
-      var result = parse(
+      var result = parseTable(
         Table(
           columnDefinitions: [LeftAlignedColumn(), RightAlignedColumn()],
           rows: [
@@ -141,7 +141,7 @@ void main() {
       }
     });
     test('generating toprule', () {
-      var result = parse(
+      var result = parseTable(
         Table(
           columnDefinitions: [LeftAlignedColumn(), RightAlignedColumn()],
           rows: [
@@ -166,7 +166,7 @@ void main() {
       }
     });
     test('generating bottomrule', () {
-      var result = parse(
+      var result = parseTable(
         Table(
           columnDefinitions: [LeftAlignedColumn(), RightAlignedColumn()],
           rows: [
@@ -191,7 +191,7 @@ void main() {
       }
     });
     test('generating midrule', () {
-      var result = parse(
+      var result = parseTable(
         Table(
           columnDefinitions: [LeftAlignedColumn(), RightAlignedColumn()],
           rows: [
@@ -222,8 +222,8 @@ void main() {
         expect(result.value, value);
       }
     });
-    test('generating midrule', () {
-      var result = parse(
+    test('generating euro field', () {
+      var result = parseTable(
         Table(
           columnDefinitions: [LeftAlignedColumn(), RightAlignedColumn()],
           rows: [
@@ -260,7 +260,7 @@ void main() {
     });
   });
   test('one missing cell', () {
-    var result = parse(
+    var result = parseTable(
       Table(
         columnDefinitions: [LeftAlignedColumn(), RightAlignedColumn()],
         rows: [
@@ -285,7 +285,7 @@ void main() {
     }
   });
   test('all cells missing', () {
-    var result = parse(
+    var result = parseTable(
       Table(
         columnDefinitions: [LeftAlignedColumn(), RightAlignedColumn()],
         rows: [
@@ -310,7 +310,7 @@ void main() {
     }
   });
   test('one cell to much', () {
-    var result = parse(
+    var result = parseTable(
       Table(
         columnDefinitions: [LeftAlignedColumn(), RightAlignedColumn()],
         rows: [
@@ -341,7 +341,7 @@ void main() {
     }
   });
   test('two cells to much', () {
-    var result = parse(
+    var result = parseTable(
       Table(
         columnDefinitions: [LeftAlignedColumn()],
         rows: [
@@ -367,7 +367,7 @@ void main() {
     }
   });
   test('warning if too much cells', () {
-    var result = parse(
+    var result = parseTable(
       Table(
         columnDefinitions: [LeftAlignedColumn()],
         rows: [
@@ -387,7 +387,7 @@ void main() {
     }
   });
   test('warning if too few cells', () {
-    var result = parse(
+    var result = parseTable(
       Table(
         columnDefinitions: [LeftAlignedColumn()],
         rows: [
