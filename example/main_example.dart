@@ -1,5 +1,4 @@
-import 'package:latex_table/src/latex_table_base.dart';
-import 'package:latex_table/src/record.dart';
+import 'package:latex_table/latex_table.dart';
 
 /// This is the example from the README. A scientific table with two left
 /// aligned columns. The values in the second column are suffixed by a € symbol.

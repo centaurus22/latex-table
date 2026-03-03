@@ -1,5 +1,4 @@
-import 'package:latex_table/src/latex_table_base.dart';
-import 'package:latex_table/src/record.dart';
+import 'package:latex_table/latex_table.dart';
 
 /// Warning example: If the number of columns in the row list differs from the
 /// number of columns in the columnDefinitions list warnings are added to

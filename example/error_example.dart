@@ -1,5 +1,4 @@
-import 'package:latex_table/src/latex_table_base.dart';
-import 'package:latex_table/src/record.dart';
+import 'package:latex_table/latex_table.dart';
 
 /// Error example: A table must contain a least one column. This information
 /// is wrapped in the [Error] object.
