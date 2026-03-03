@@ -26,6 +26,7 @@ the LICENSE file for the full text.
 If you need any feature please [contact](#contact) me.
 
 ## Usage
+
 The following Dart record structure
 ```dart
 var table = Table(
@@ -40,15 +41,24 @@ var table = Table(
     ],
   );
 ```
-will be converted into this LaTeX source code by `parse(table)` :
+`parse(table)` returns the LaTeX source code wrapped in a `Success` object if 
+the input is valid. It can be unwrapped by getting its value.
+
+```dart
+Result result = parseTable(table);
+if (result is Success) {
+  print(result.value);
+}
+```
+This prints the following LaTeX source code:
 
 ```latex
 \begin{tabular}{ll}
   \toprule
-  Item      & Costs         \\
+  Item & Costs         \\
   \midrule
-  Food      & \EUR{150.98}  \\
-  Rent      & \EUR{1223.23} \\
+  Food & \EUR{150.98}  \\
+  Rent & \EUR{1223.23} \\
   \bottomrule
 \end{tabular}
 ```
