@@ -1,15 +1,24 @@
 name: latex_table
-description: A starting point for Dart libraries or applications.
+description: A Dart library to parse an object structure to LaTeX source code for a simple table.
 version: 1.0.0
-# repository: https://github.com/my_org/my_repo
+
+topics: 
+  - latex
+  - parsing
+  - table
+  - library
+  - scientific
+
+repository: https://github.com/centaurus22/latex-table
 
 environment:
   sdk: ^3.10.7
 
-# Add regular dependencies here.
 dependencies:
-  # path: ^1.9.0
 
 dev_dependencies:
   lints: ^6.0.0
   test: ^1.25.6
+
+funding: 
+  - https://www.paypal.com/paypalme/klausthorres
