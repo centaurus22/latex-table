@@ -1,6 +1,6 @@
 name: latex_table
 description: A Dart library to parse an object structure to LaTeX source code for a simple table.
-version: 1.0.0
+version: 1.0.1
 
 topics: 
   - latex
