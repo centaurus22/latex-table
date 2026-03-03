@@ -29,6 +29,8 @@ If you need any feature please [contact](#contact) me.
 
 The following Dart record structure
 ```dart
+import 'package:latex_table/latex_table.dart';
+
 var table = Table(
     columnDefinitions: [LeftAlignedColumn(), LeftAlignedColumn()],
     rows: [
@@ -62,6 +64,7 @@ This prints the following LaTeX source code:
   \bottomrule
 \end{tabular}
 ```
+For more advanced usage, see the `example/` directory.
 
 ## Contact
 
