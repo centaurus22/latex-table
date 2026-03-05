@@ -4,4 +4,4 @@
 
 ## 1.0.1
 
- - Move examples to single README in example folder
+- Move examples to single README in example folder
